@@ -4,6 +4,21 @@ Quick script to dump or get all windows tasks with the last run time.
 
 It involves 2 cmdlets (`Get-ScheduledTask` and `Get-ScheduledTaskInfo`), and also showcases the use of PSCustomObject to include information from different cmdlets.
 
+We could have simply run the below command:
+
+```powershell
+Get-ScheduledTask | where state -EQ 'ready' | Get-ScheduledTaskInfo | Out-GridView
+```
+
+or storing in a CSV file:
+
+```powershell
+Get-ScheduledTask | where state -EQ 'ready' | Get-ScheduledTaskInfo | Export-CSV -NoTypeInformation -Path c:\temp\ScheduledTasksInfoList.csv
+```
+
+But I needed information like the task state (Running / Deactivated / Stopped), that is obtained with `Get-ScheduledTask` only while the LastRunTime / NextRunTime properties can only be retrieved with `Get-ScheduledTaskInfo` cmdlet. That's why I needed to create a `[PSCustomObject]` to include properties from both cmdlets.
+
+
 # Usage
 
 Plain simple run the script, this will get the list of Windows scheduled tasks.
