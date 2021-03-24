@@ -11,18 +11,24 @@ Foreach ($Task in $WinTasks){
     $TaskTriggerEnabled = $Task.Triggers.Enabled
     $TaskRepetitionType = $Task.Triggers.Repetition
     $TaskStartBoundary = $Task.Triggers.StartBoundary
-    $TaskLastRunTime = ((Get-ScheduledTaskInfo $TAsk).LastRunTime)
+    
+    $TaskInfo = Get-ScheduledTaskInfo $Task
+    $TaskLastRunTime = $TaskInfo.LastRunTime
+    $TaskNextRunTime = $TaskInfo.NextRunTime
+    
     $TaskCustomCollection += [PSCustomobject]@{
                                                 TaskName = $TaskName
                                                 TaskState = $TAskState
+                                                TaskInterval = $TAskInterval
                                                 TaskLastRunTime = $TaskLastRunTime
+                                                TaskNextRunTime = $TaskNextRunTime
                                                 TaskTriggerEnabled = $TaskTriggerEnabled
                                                 TaskRepetitionType = $TaskRepetitionType
                                                 TaskStartBoundary = $TaskStartBoundary
-                                                TaskInterval = $TAskInterval
+                                                TaskPath = $TaskPath
                                                }
 
 
 }
 
-$TaskCustomCollection | Select Taskname,TaskState,TaskInterval, TaskLastRunTime,TaskTriggerEnabled,TaskRepetitionType,TaskStartBoundary | Out-GridView
+$TaskCustomCollection | Sort-object TaskLastRunTime -Descending | Out-GridView
