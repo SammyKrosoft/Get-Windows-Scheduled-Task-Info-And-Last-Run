@@ -4,6 +4,14 @@ Quick script to dump or get all windows tasks with the last run time.
 
 It involves 2 cmdlets (`Get-ScheduledTask` and `Get-ScheduledTaskInfo`), and also showcases the use of PSCustomObject to include information from different cmdlets.
 
+# Usage
+
+Plain simple run the script, this will get the list of Windows scheduled tasks.
+
+```powershell
+.\Get-WindowsTaskSchedulerExtendedInfo.ps1
+```
+
 # Output
 
 The script outputs the result in an Out-Gridview command, which shows the result in a PowerShell grid that you can filter, sort, copy/paste, like the below:
