@@ -4,6 +4,8 @@ Quick script to dump or get all windows tasks with the last run time.
 
 It involves 2 cmdlets (`Get-ScheduledTask` and `Get-ScheduledTaskInfo`), and also showcases the use of PSCustomObject to include information from different cmdlets.
 
+# Challenge
+
 We could have simply run the below command:
 
 ```powershell
@@ -16,10 +18,25 @@ or storing in a CSV file:
 Get-ScheduledTask | where state -EQ 'ready' | Get-ScheduledTaskInfo | Export-CSV -NoTypeInformation -Path c:\temp\ScheduledTasksInfoList.csv
 ```
 
-But I needed information like the task state (Running / Deactivated / Stopped), that is obtained with `Get-ScheduledTask` only while the LastRunTime / NextRunTime properties can only be retrieved with `Get-ScheduledTaskInfo` cmdlet. That's why I needed to create a `[PSCustomObject]` to include properties from both cmdlets.
+But I needed information like the **task state** (Running / Deactivated / Stopped), as well as the **Task running schedules** and **running intervals** as well as the **initial start**, which are all obtained with `Get-ScheduledTask` and I also needed the **LastRunTime / NextRunTime** properties can only be retrieved with `Get-ScheduledTaskInfo` cmdlet. That's why I needed to create a `[PSCustomObject]` to include properties from both cmdlets, to get some properties like:
 
+|Property          |Get-ScheduledTask|Get-ScheduledTaskInfo|
+|--------          |-----------------|---------------------|
+|TaskName          |       X         |          X          |
+|TaskPath          |       X         |          X          |
+|TaskState         |       X         |                     |
+|TaskInterval      |       X         |                     |
+|TaskLastRunTime   |                 |          X          |
+|TaskNextRunTime   |                 |          X          |
+|TaskTriggerEnabled|       X         |                     |
+|TaskRepetitionType|       X         |                     |
+|TaskStartBoundary |       X         |                     |
 
-# Usage
+<br>
+To get these information from both cmdlets, we need to save these in a `[PSCustomObject]` through a quick script...
+<br><br>
+
+# Script Usage
 
 Plain simple run the script, this will get the list of Windows scheduled tasks.
 
